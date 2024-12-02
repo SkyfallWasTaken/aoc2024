@@ -1,10 +1,15 @@
 use aoc_runner_derive::{aoc, aoc_generator};
 
 #[aoc_generator(day2)]
-pub fn input_generator(input: &str) -> Vec<Vec<i32>> {
+pub fn input_generator(input: &str) -> Vec<Vec<i16>> {
+    /* input
+    .split_whitespace()
+    .map(|n| n.parse::<i32>().unwrap())
+    .chunks()
+    .collect() */
     input
         .lines()
-        .map(|line| line.split(' ').map(|n| n.parse::<i32>().unwrap()).collect())
+        .map(|line| line.split(' ').map(|n| n.parse::<i16>().unwrap()).collect())
         .collect()
 }
 
@@ -15,7 +20,7 @@ enum Op {
 }
 
 #[aoc(day2, part1)]
-pub fn solve_part1(input: &[Vec<i32>]) -> i32 {
+pub fn solve_part1(input: &[Vec<i16>]) -> i16 {
     let mut safe_count = 0;
 
     for report in input {
@@ -28,7 +33,7 @@ pub fn solve_part1(input: &[Vec<i32>]) -> i32 {
 }
 
 #[aoc(day2, part2)]
-pub fn solve_part2(input: &[Vec<i32>]) -> i32 {
+pub fn solve_part2(input: &[Vec<i16>]) -> i16 {
     let mut safe_count = 0;
 
     for report in input {
@@ -45,7 +50,7 @@ pub fn solve_part2(input: &[Vec<i32>]) -> i32 {
     safe_count
 }
 
-fn check_report(report: &Vec<i32>) -> bool {
+fn check_report(report: &Vec<i16>) -> bool {
     let mut mode: Option<Op> = None;
     let mut safe = true;
     for window in report.windows(2) {
