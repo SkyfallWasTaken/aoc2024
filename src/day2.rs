@@ -37,12 +37,12 @@ pub fn solve_part2(input: &[Vec<i16>]) -> i16 {
     let mut safe_count = 0;
 
     for report in input {
-        'report_iter: for n in 0..report.len() {
+        for n in 0..report.len() {
             let mut report = report.clone();
             report.remove(n);
             if check_report(&report) {
                 safe_count += 1;
-                break 'report_iter;
+                break; // breaks out of second loop
             }
         }
     }
