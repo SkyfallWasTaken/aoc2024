@@ -13,9 +13,7 @@ fn map_op(opcode: &str, n1: Option<i64>, n2: Option<i64>) -> Op {
         "do" => Op::Do,
         "don't" => Op::DoNot,
         "mul" => Op::Mul(n1.unwrap(), n2.unwrap()),
-        _ => {
-            unreachable!()
-        }
+        _ => unreachable!(),
     }
 }
 
