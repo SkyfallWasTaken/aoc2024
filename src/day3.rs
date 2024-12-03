@@ -1,5 +1,5 @@
 use aoc_runner_derive::{aoc, aoc_generator};
-use regex_automata::meta::Regex;
+use regex::Regex;
 
 #[derive(Debug, Clone)]
 pub enum Op {
@@ -9,10 +9,10 @@ pub enum Op {
 }
 
 fn map_op(opcode: &str, n1: Option<i64>, n2: Option<i64>) -> Op {
-    match opcode.len() {
-        2 => Op::Do,
-        5 => Op::DoNot,
-        3 => Op::Mul(n1.unwrap(), n2.unwrap()),
+    match opcode {
+        "do" => Op::Do,
+        "don't" => Op::DoNot,
+        "mul" => Op::Mul(n1.unwrap(), n2.unwrap()),
         _ => unreachable!(),
     }
 }
@@ -20,23 +20,21 @@ fn map_op(opcode: &str, n1: Option<i64>, n2: Option<i64>) -> Op {
 #[aoc_generator(day3)]
 pub fn input_generator(input: &str) -> Vec<Op> {
     let re = Regex::new(r"(do|don't|mul)?\((?:(\w+),(\w+)?)?\)").unwrap();
-    let mut results: Vec<Op> = Vec::new();
-    let caps = re.captures_iter(input);
-    for cap in caps {
-        let opcode = cap.get_group(1).map(|span| &input[span.start..span.end]);
-        if let Some(opcode) = opcode {
-            let n1 = cap.get_group(2).map(|span| {
-                let s = &input[span.start..span.end];
-                s.parse().unwrap()
-            });
-            let n2 = cap.get_group(3).map(|span| {
-                let s = &input[span.start..span.end];
-                s.parse().unwrap()
-            });
-            results.push(map_op(opcode, n1, n2))
-        }
-    }
-    results
+    let matches = re.captures_iter(input);
+    matches
+        .map(|r#match| {
+            let opcode = r#match.get(1).map(|m| m.as_str());
+            if let Some(opcode) = opcode {
+                return Some(map_op(
+                    opcode,
+                    r#match.get(2).map(|m| m.as_str().parse().unwrap()),
+                    r#match.get(3).map(|m| m.as_str().parse().unwrap()),
+                ));
+            }
+            None
+        })
+        .flatten()
+        .collect()
 }
 
 #[aoc(day3, part1)]
