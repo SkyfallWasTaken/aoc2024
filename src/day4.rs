@@ -1,20 +1,40 @@
-use aho_corasick::AhoCorasick;
+/* use aho_corasick::AhoCorasick;
 use aoc_runner_derive::{aoc, aoc_generator};
 use itertools::Itertools;
 
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct Cell {
+    pub r#char: char,
+    pub visited: bool,
+}
+
 #[aoc_generator(day4)]
-pub fn input_generator(input: &str) -> Vec<Vec<String>> {
+pub fn input_generator(input: &str) -> Vec<Vec<Cell>> {
     input
         .lines()
-        .into_iter()
-        .chunks(4)
-        .into_iter()
-        .map(|chunk| chunk.map(|s| s.to_string()).collect())
+        .map(|line| {
+            line.chars()
+                .map(|c| Cell {
+                    r#char: c,
+                    visited: false,
+                })
+                .collect_vec()
+        })
         .collect()
 }
 
 #[aoc(day4, part1)]
-pub fn solve_part1(input: &[Vec<String>]) -> usize {
+pub fn solve_part1(input: &[Vec<Cell>]) -> usize {
+    let mut input = input.to_vec();
+    let matcher = AhoCorasick::new(&["XMAS", "SAMX"]).unwrap();
+
+    for (rownum, row) in input.iter_mut().enumerate() {
+        println!("{:?}", row);
+        for (colnum, col) in row.iter_mut().enumerate() {
+            matcher.find_overlapping_iter(str::from)
+        }
+    }
+    todo!()
     /* let mut count = 0;
     let matcher = AhoCorasick::new(&["XMAS", "SAMX"]).unwrap();
     for chunk in input {
@@ -64,4 +84,5 @@ pub fn solve_part1(input: &[Vec<String>]) -> usize {
 pub fn solve_part2(input: &[(i32, i32)]) -> usize {
     todo!()
 }
+ */
  */
